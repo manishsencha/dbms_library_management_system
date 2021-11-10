@@ -38,6 +38,18 @@ app.get("/adddepartment", (req, res) => {
 app.get("/issue", (req, res) => {
   return res.render("issue")
 })
+
+app.post("/insertbook", (req, res) => {
+  const { isbn, bookname, author, publisher, noofcopies } = req.body
+  pool
+    .query(
+      "insert into books (isbn, book_name, author, publisher, number_of_copies) values ($1, $2, $3, $4, $5)",
+      [isbn, bookname, author, publisher, noofcopies]
+    )
+    .then(() => console.log("Success"))
+    .catch((e) => console.log(e))
+    return res.redirect('/addbook')
+})
 app.post("/userlogin", (req, res) => {
   const { username, password } = req.body
   console.log(req.body)
@@ -132,7 +144,8 @@ app.post("/redirect_student", async (req, res) => {
 
 app.post("/insertreturn", async (req, res) => {
   const { issueid } = req.body
-  let fine = 0, enrolment_number=""
+  let fine = 0,
+    enrolment_number = ""
   console.log(issueid)
   await pool
     .query("select * from issuedbooks where issue_id = $1", [issueid])
