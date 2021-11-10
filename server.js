@@ -48,7 +48,7 @@ app.post("/insertbook", (req, res) => {
     )
     .then(() => console.log("Success"))
     .catch((e) => console.log(e))
-    return res.redirect('/addbook')
+  return res.redirect("/addbook")
 })
 app.post("/userlogin", (req, res) => {
   const { username, password } = req.body
@@ -70,7 +70,32 @@ app.post("/registerdepartment", async (req, res) => {
 app.post("/insertissue", async (req, res) => {
   const { bookid, enrolmentnumber } = req.body
   let issued_books = 0,
-    returned_books = 0
+    returned_books = 0,
+    book_issue_count = 0,
+    book_return_count = 0,
+    total_book_count = 0
+  await pool
+    .query("select count(*) from issuedbooks where book_id = $1", [bookid])
+    .then((res) => {
+      book_issue_count = res.rows[0].count
+    })
+    .catch((e) => console.error(e))
+  await pool
+    .query(
+      "select count(*) from returnedbooks where issue_id in (select issue_id from issuedbooks where book_id = $1)",
+      [bookid]
+    )
+    .then((res) => {
+      book_return_count = res.rows[0].count
+    })
+    .catch((e) => console.log(e))
+  await pool
+    .query("select number_of_copies from books where book_id = $1", [bookid])
+    .then((results) => (total_book_count = results.rows[0].number_of_copies))
+    .catch((e) => console.log(e))
+  if (book_issue_count - book_return_count >= total_book_count) {
+    return res.redirect('/issue')
+  }
   await pool
     .query("select count(*) from issuedbooks where enrolment_number = $1", [
       enrolmentnumber,
