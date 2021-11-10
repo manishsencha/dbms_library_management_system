@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3"
+      crossorigin="anonymous"
+    />
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
+      crossorigin="anonymous"
+    ></script>
+    <title>Return | LMS</title>
+  </head>
+  <body>
+    <div
+      class="container w-100 d-flex justify-content-center align-items-center"
+      style="min-height: 70vh"
+    >
+      <form
+        class="border border-2 rounded p-3"
+        method="POST"
+        action="/insertreturn"
+      >
+        <center>
+          <div class="mb-3"><h1>Return Book</h1></div>
+        </center>
+        <div class="mb-3">
+          <label for="issueid" class="form-label">Issue Id</label>
+          <input
+            type="text"
+            class="form-control"
+            id="issueid"
+            name="issueid"
+            aria-describedby="issueid"
+            required
+          />
+        </div>
+        <button type="submit" class="btn btn-primary">Submit</button>
+      </form>
+    </div>
+    <table class="table table-striped table-responsive">
+      <thead>
+        <tr>
+          <td>Issue ID</td>
+          <td>Book_ID</td>
+          <td>Issue Date</td>
+          <td>Return Date</td>
+        </tr>
+      </thead>
+      <tbody>
+        <%data.forEach(issue =>{%>
+        <tr>
+          <td><%=issue.issue_id%></td>
+          <td><%=issue.book_id%></td>
+          <td><%=issue.issue_date%></td>
+          <td><%=issue.return_date%></td>
+        </tr>
+        <%})%>
+      </tbody>
+    </table>
+  </body>
+</html>
