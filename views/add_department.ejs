@@ -18,11 +18,18 @@
     <title>Add Department | LMS</title>
   </head>
   <body
-    class="container w-100 d-flex justify-content-center align-items-center"
+    class="container w-100 d-flex flex-column align-items-center"
     style="min-height: 100vh"
   >
+    <div class="w-100 d-flex justify-content-center my-3 py-3">
+      <a class="btn btn-primary m-2" href="/addbook">Add Book</a>
+      <a class="btn btn-secondary disabled m-2" href="/adddepartment">Add Department</a>
+      <a class="btn btn-primary m-2" href="/addstudent">Add Student</a>
+      <a class="btn btn-primary m-2" href="/issue">Issue Book</a>
+      <a class="btn btn-primary m-2" href="/return">Return Book</a>
+    </div>
     <form
-      class="border border-2 rounded p-3"
+      class="border border-2 rounded p-3 my-3"
       method="POST"
       action="/registerdepartment"
     >

@@ -9,10 +9,6 @@ app.get("/", (req, res) => {
   return res.render("home")
 })
 
-app.get("/login", (req, res) => {
-  return res.render("login")
-})
-
 app.get("/addstudent", async (req, res) => {
   try {
     let departments = []
@@ -94,7 +90,7 @@ app.post("/insertissue", async (req, res) => {
     .then((results) => (total_book_count = results.rows[0].number_of_copies))
     .catch((e) => console.log(e))
   if (book_issue_count - book_return_count >= total_book_count) {
-    return res.redirect('/issue')
+    return res.redirect("/issue")
   }
   await pool
     .query("select count(*) from issuedbooks where enrolment_number = $1", [
@@ -227,5 +223,3 @@ app.post("/registerstudent", (req, res) => {
 app.listen(PORT, () => {
   console.log(`Server is running at http://localhost:${PORT}`)
 })
-
-// select department_number from department where department_name = given_name
