@@ -8,7 +8,13 @@ app.set("view engine", "ejs")
 app.get("/", (req, res) => {
   return res.render("home")
 })
-
+var messages = {
+  issue: "",
+  return: "",
+  addstudent: "",
+  adddepartment: "",
+  addbook: "",
+}
 app.get("/addstudent", async (req, res) => {
   try {
     let departments = []
@@ -25,14 +31,33 @@ app.get("/addstudent", async (req, res) => {
 })
 
 app.get("/addbook", (req, res) => {
-  return res.render("add_book")
+  return res.render("add_book", {messages: messages})
 })
 
 app.get("/adddepartment", (req, res) => {
-  return res.render("add_department")
+  return res.render("add_department", {messages: messages})
 })
 app.get("/issue", (req, res) => {
-  return res.render("issue")
+  return res.render("issue", {messages: messages})
+})
+
+app.get("/return", async (req, res) => {
+  return res.render("find_student", {messages: messages})
+})
+
+app.get("/return/:id", async (req, res) => {
+  const enrolment_number = req.params.id
+  console.log(enrolment_number)
+  let data = []
+  await pool
+    .query(
+      "select * from issuedbooks where enrolment_number=$1 and issue_id not in (select issue_id from returnedbooks)",
+      [enrolment_number]
+    )
+    .then((results) => (data = results.rows))
+    .catch((e) => console.log(e))
+  console.log(data)
+  return res.render("return", { data: data })
 })
 
 app.post("/insertbook", (req, res) => {
@@ -120,25 +145,6 @@ app.post("/insertissue", async (req, res) => {
     .then(() => console.log("success"))
     .catch((e) => console.error(e))
   return res.redirect("/issue")
-})
-
-app.get("/return/:id", async (req, res) => {
-  const enrolment_number = req.params.id
-  console.log(enrolment_number)
-  let data = []
-  await pool
-    .query(
-      "select * from issuedbooks where enrolment_number=$1 and issue_id not in (select issue_id from returnedbooks)",
-      [enrolment_number]
-    )
-    .then((results) => (data = results.rows))
-    .catch((e) => console.log(e))
-  console.log(data)
-  return res.render("return", { data: data })
-})
-
-app.get("/return", async (req, res) => {
-  return res.render("find_student")
 })
 
 app.post("/redirect_student", async (req, res) => {

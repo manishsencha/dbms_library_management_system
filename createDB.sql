@@ -37,7 +37,7 @@ create table issuedbooks(
 create table returnedbooks (
 	return_id serial primary key,
 	issue_id integer not null, 
-	return_date date not null,
+	actual_return_date date not null default current_date,
 	fine integer default 0,
 	foreign key (issue_id ) references issuedbooks(issue_id)
 );
