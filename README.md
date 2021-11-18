@@ -1,6 +1,6 @@
 # dbms_library_management_system
 
-## Installation
+## Installation 
 <ul>
   <li> Clone the repository : <code>git clone https://github.com/manishsencha/dbms_library_management_system.git</code></li>
   <li>Navigate to directory : <code>cd dbms_library_management_system</code></li>
